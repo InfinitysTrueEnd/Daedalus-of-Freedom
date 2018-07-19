@@ -19,14 +19,14 @@
 
 	allowed_jobs = list(/datum/job/captain, /datum/job/hop, /datum/job/rd, /datum/job/cmo, /datum/job/chief_engineer, /datum/job/hos,
 						/datum/job/liaison, /datum/job/representative, /datum/job/sea,
-						/datum/job/bridgeofficer, /datum/job/pathfinder, /datum/job/explorer,
+						/datum/job/bridgeofficer, /datum/job/pathfinder, /datum/job/nt_pilot, /datum/job/explorer,
 						/datum/job/senior_engineer, /datum/job/engineer, /datum/job/engineer_contractor, /datum/job/roboticist, /datum/job/engineer_trainee,
 						/datum/job/officer, /datum/job/warden, /datum/job/detective,
 						/datum/job/senior_doctor, /datum/job/doctor, /datum/job/doctor_contractor,/datum/job/chemist, /datum/job/medical_trainee,
 						/datum/job/psychiatrist,
-						/datum/job/qm, /datum/job/cargo_tech, /datum/job/cargo_contractor,
+						/datum/job/qm, /datum/job/cargo_tech, /datum/job/cargo_contractor, /datum/job/mining,
 						/datum/job/janitor, /datum/job/chef, /datum/job/bartender,
-						/datum/job/senior_scientist, /datum/job/nt_pilot, /datum/job/scientist, /datum/job/mining, /datum/job/guard, /datum/job/scientist_assistant,
+						/datum/job/senior_scientist, /datum/job/scientist, /datum/job/guard, /datum/job/scientist_assistant,
 						/datum/job/ai, /datum/job/cyborg,
 						/datum/job/crew, /datum/job/assistant,
 						/datum/job/merchant, /datum/job/stowaway
@@ -272,7 +272,7 @@
 			            access_maint_tunnels, access_external_airlocks, access_emergency_storage,
 			            access_teleporter, access_eva, access_heads,
 			            access_hos, access_RC_announce, access_keycard_auth, access_sec_doors,
-			            access_solgov_crew, access_gun, access_emergency_armory)
+			            access_solgov_crew, access_gun, access_emergency_armory, access_hangar)
 	minimal_access = list()
 
 	software_on_spawn = list(/datum/computer_file/program/comm,
@@ -326,9 +326,6 @@
 	selection_color = "#2f2f7f"
 	economic_modifier = 15
 	minimal_player_age = 10
-	alt_titles = list(
-		"Inspector General"
-		)
 	outfit_type = /decl/hierarchy/outfit/job/torch/crew/representative
 	allowed_branches = list(/datum/mil_branch/civilian)
 	allowed_ranks = list(/datum/mil_rank/civ/civ)
@@ -336,7 +333,7 @@
 						SKILL_FINANCE     = SKILL_BASIC)
 	skill_points = 20
 
-	access = list(access_representative, access_security,access_medical, access_engine,
+	access = list(access_representative, access_security, access_medical,
 			            access_heads, access_cargo, access_solgov_crew, access_hangar)
 
 	software_on_spawn = list(/datum/computer_file/program/reports)
@@ -456,6 +453,31 @@
 
 /datum/job/pathfinder/get_description_blurb()
 	return "You are the Pathfinder. Your duty is to organize and lead the expeditions to away sites, carrying out the EC’s Primary Mission. You command Explorers. You make sure that expedition has the supplies and personnel it needs. You can pilot Charon if NT doesn’t provide their pilot. Once on the away mission, your duty is to ensure that anything of scientific interest is brought back to the ship and passed to the relevant research lab."
+
+/datum/job/nt_pilot
+	title = "Shuttle Pilot"
+	supervisors = "the Pathfinder"
+	department = "Exploration"
+	department_flag = EXP
+
+	total_positions = 1
+	spawn_positions = 1
+	selection_color = "#68099e"
+	economic_modifier = 10
+	minimal_player_age = 4
+	ideal_character_age = 25
+	outfit_type = /decl/hierarchy/outfit/job/torch/passenger/pilot
+	allowed_branches = list(/datum/mil_branch/civilian)
+	allowed_ranks = list(
+		/datum/mil_rank/civ/contractor,
+		/datum/mil_rank/civ/nt = /decl/hierarchy/outfit/job/torch/passenger/research/nt_pilot
+	)
+
+	access = list(access_mining_office,
+						access_mining_station, access_expedition_shuttle, access_expedition_shuttle_helm, access_guppy,
+						access_hangar, access_petrov, access_petrov_helm, access_guppy_helm, access_mining)
+	min_skill = list(	SKILL_EVA   = SKILL_BASIC,
+						SKILL_PILOT = SKILL_ADEPT)
 
 /datum/job/explorer
 	title = "Explorer"
@@ -1101,6 +1123,35 @@
 							 /datum/computer_file/program/deck_management,
 							 /datum/computer_file/program/reports)
 
+/datum/job/mining
+	title = "Prospector"
+	department = "Supply"
+	department_flag = SUP
+	total_positions = 4
+	spawn_positions = 4
+	supervisors = "the Deck Officer and Executive Officer"
+	selection_color = "#515151"
+	economic_modifier = 7
+	ideal_character_age = 25
+	alt_titles = list(
+		"Drill Technician",
+		"Shaft Miner",
+		"Salvage Technician")
+	min_skill = list(	SKILL_MECH    = SKILL_BASIC,
+						SKILL_HAULING = SKILL_ADEPT,
+						SKILL_EVA     = SKILL_BASIC)
+
+	outfit_type = /decl/hierarchy/outfit/job/torch/passenger/research/prospector
+	allowed_branches = list(/datum/mil_branch/civilian)
+	allowed_ranks = list(
+		/datum/mil_rank/civ/nt,
+		/datum/mil_rank/civ/contractor
+	)
+
+	access = list(access_mining, access_mining_office, access_mining_station,
+						access_expedition_shuttle, access_guppy, access_hangar, access_guppy_helm)
+	minimal_access = list()
+
 /datum/job/janitor
 	title = "Sanitation Technician"
 	department = "Service"
@@ -1232,29 +1283,6 @@
 						SKILL_SCIENCE     = SKILL_ADEPT)
 	skill_points = 20
 
-/datum/job/nt_pilot
-	title = "NanoTrasen Pilot"
-	supervisors = "the Research Director"
-	department = "Science"
-	department_flag = SCI
-
-	total_positions = 1
-	spawn_positions = 1
-	supervisors = "the Research Director and NanoTrasen Personnel"
-	selection_color = "#633d63"
-	economic_modifier = 10
-	minimal_player_age = 5
-	ideal_character_age = 40
-	outfit_type = /decl/hierarchy/outfit/job/torch/passenger/research/nt_pilot
-	allowed_branches = list(/datum/mil_branch/civilian)
-	allowed_ranks = list(/datum/mil_rank/civ/nt)
-
-	access = list(access_research, access_mining_office,
-						access_mining_station, access_nanotrasen, access_expedition_shuttle, access_expedition_shuttle_helm, access_guppy,
-						access_hangar, access_petrov, access_petrov_helm, access_guppy_helm, access_mining)
-	min_skill = list(	SKILL_EVA   = SKILL_BASIC,
-						SKILL_PILOT = SKILL_ADEPT)
-
 /datum/job/scientist
 	title = "Scientist"
 	total_positions = 6
@@ -1283,34 +1311,6 @@
 						access_xenoarch, access_nanotrasen, access_expedition_shuttle, access_guppy, access_hangar)
 	minimal_access = list()
 	skill_points = 20
-
-
-/datum/job/mining
-	title = "Prospector"
-	department = "Science"
-	department_flag = SCI
-	total_positions = 4
-	spawn_positions = 4
-	supervisors = "the Research Director"
-	selection_color = "#633d63"
-	economic_modifier = 7
-	ideal_character_age = 25
-	alt_titles = list(
-		"Drill Technician",
-		"Shaft Miner",
-		"Salvage Technician")
-	min_skill = list(	SKILL_MECH    = SKILL_BASIC,
-						SKILL_HAULING = SKILL_ADEPT,
-						SKILL_EVA     = SKILL_BASIC)
-
-	outfit_type = /decl/hierarchy/outfit/job/torch/passenger/research/prospector
-	allowed_branches = list(/datum/mil_branch/civilian)
-	allowed_ranks = list(/datum/mil_rank/civ/nt)
-
-	access = list(access_research, access_mining, access_mining_office, access_mining_station, access_nanotrasen,
-						access_expedition_shuttle, access_guppy, access_hangar, access_petrov, access_guppy_helm)
-	minimal_access = list()
-
 
 /datum/job/guard
 	title = "Security Guard"
