@@ -287,7 +287,7 @@
 	                    SKILL_COMBAT      = SKILL_BASIC,
 	                    SKILL_WEAPONS     = SKILL_ADEPT,
 	                    SKILL_FORENSICS   = SKILL_BASIC)
-	
+
 	max_skill = list(   SKILL_COMBAT      = SKILL_MAX,
 	                    SKILL_WEAPONS     = SKILL_MAX,
 	                    SKILL_FORENSICS   = SKILL_MAX)
@@ -980,7 +980,7 @@
 	alt_titles = list(
 		"Field Medic" = /decl/hierarchy/outfit/job/torch/crew/medical/doctor/medic,
 		"Medical Technician",
-		"Nurse")
+		"Nursing Assistant")
 	outfit_type = /decl/hierarchy/outfit/job/torch/crew/medical/doctor/fleet
 	allowed_branches = list(
 		/datum/mil_branch/expeditionary_corps = /decl/hierarchy/outfit/job/torch/crew/medical/doctor,
