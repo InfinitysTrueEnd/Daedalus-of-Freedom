@@ -6,14 +6,19 @@
 		/datum/species/vox = list(/datum/job/ai, /datum/job/cyborg, /datum/job/merchant, /datum/job/stowaway)
 	)
 
-#define HUMAN_ONLY_JOBS /datum/job/captain, /datum/job/hop, /datum/job/cmo, /datum/job/chief_engineer, /datum/job/hos, /datum/job/representative, /datum/job/sea, /datum/job/pathfinder
-	species_to_job_blacklist = list(
-		/datum/species/unathi  = list(HUMAN_ONLY_JOBS, /datum/job/liaison, /datum/job/warden), //Other jobs unavailable via branch restrictions,
-		/datum/species/skrell  = list(HUMAN_ONLY_JOBS),
-		/datum/species/machine = list(HUMAN_ONLY_JOBS),
-		/datum/species/diona   = list(HUMAN_ONLY_JOBS, /datum/job/guard, /datum/job/officer, /datum/job/rd, /datum/job/liaison, /datum/job/warden),	//Other jobs unavailable via branch restrictions,
-	)
-#undef HUMAN_ONLY_JOBS
+
+
+//#define HUMAN_ONLY_JOBS /datum/job/captain, /datum/job/hop, /datum/job/cmo, /datum/job/chief_engineer, /datum/job/hos, /datum/job/representative, /datum/job/sea, /datum/job/pathfinder, /datum/job/warden
+//	species_to_job_blacklist = list(
+//		/datum/species/unathi  = list(HUMAN_ONLY_JOBS, /datum/job/liaison), //Other jobs unavailable via branch restrictions,
+//		/datum/species/skrell  = list(HUMAN_ONLY_JOBS),
+//		/datum/species/tajaran = list(HUMAN_ONLY_JOBS),
+//		/datum/species/machine = list(HUMAN_ONLY_JOBS),
+//		/datum/species/diona   = list(HUMAN_ONLY_JOBS, /datum/job/guard, /datum/job/officer),	//Other jobs unavailable via branch restrictions,
+//	)
+//#undef HUMAN_ONLY_JOBS
+
+
 
 	allowed_jobs = list(/datum/job/captain, /datum/job/hop, /datum/job/rd, /datum/job/cmo, /datum/job/chief_engineer, /datum/job/hos,
 						/datum/job/liaison, /datum/job/representative, /datum/job/sea,
@@ -33,6 +38,7 @@
 
 /datum/map/torch/setup_map()
 	..()
+
 	for(var/job_type in GLOB.using_map.allowed_jobs)
 		var/datum/job/job = decls_repository.get_decl(job_type)
 		// Most species are restricted from SCG security and command roles
@@ -44,7 +50,7 @@
 					species_blacklist = list()
 					species_to_job_blacklist[S.type] = species_blacklist
 				species_blacklist |= job.type
-
+        
 /datum/job/captain
 	title = "Commanding Officer"
 	supervisors = "the Sol Central Government and the Sol Code of Military Justice"

@@ -19,11 +19,12 @@
 	)
 
 	species_to_branch_whitelist = list(
-		/datum/species/diona   = list(/datum/mil_branch/civilian),
-		/datum/species/nabber  = list(/datum/mil_branch/civilian),
-		/datum/species/skrell  = list(/datum/mil_branch/civilian, /datum/mil_branch/expeditionary_corps),
-		/datum/species/unathi  = list(/datum/mil_branch/civilian, /datum/mil_branch/expeditionary_corps),
-		/datum/species/vox     = list()
+//		/datum/species/diona   = list(/datum/mil_branch/civilian),
+		/datum/species/nabber  = list(/datum/mil_branch/civilian), //Nabbers feel broken. Keeping them in civ only for now.
+//		/datum/species/tajaran = list(/datum/mil_branch/civilian, /datum/mil_branch/expeditionary_corps),
+//		/datum/species/skrell  = list(/datum/mil_branch/civilian, /datum/mil_branch/expeditionary_corps),
+//		/datum/species/unathi  = list(/datum/mil_branch/civilian, /datum/mil_branch/expeditionary_corps),
+		/datum/species/vox     = list(/datum/mil_branch/civilian) //Pirates
 	)
 
 	species_to_rank_whitelist = list(
@@ -40,24 +41,28 @@
 				/datum/mil_rank/fleet/e4,
 				/datum/mil_rank/fleet/e5,
 				/datum/mil_rank/fleet/o1
-			),
-			/datum/mil_branch/solgov = list(
-				/datum/mil_rank/sol/agent
-			)
-		),
-		/datum/species/skrell = list(
-			/datum/mil_branch/expeditionary_corps = list(
-				/datum/mil_rank/ec/e3,
-				/datum/mil_rank/ec/e5,
-				/datum/mil_rank/ec/o1
-			)
-		),
-		/datum/species/unathi = list(
-			/datum/mil_branch/expeditionary_corps = list(
-				/datum/mil_rank/ec/e3,
-				/datum/mil_rank/ec/e5
 			)
 		)
+//		/datum/species/tajaran = list(
+//			/datum/mil_branch/expeditionary_corps = list(
+//				/datum/mil_rank/ec/e3,
+//				/datum/mil_rank/ec/e5,
+//				/datum/mil_rank/ec/o1
+//			)
+//		),
+//		/datum/species/skrell = list(
+//			/datum/mil_branch/expeditionary_corps = list(
+//				/datum/mil_rank/ec/e3,
+//				/datum/mil_rank/ec/e5,
+//				/datum/mil_rank/ec/o1
+//			)
+//		),
+//		/datum/species/unathi = list(
+//			/datum/mil_branch/expeditionary_corps = list(
+//				/datum/mil_rank/ec/e3,
+//				/datum/mil_rank/ec/e5
+//			)
+		//)
 	)
 
 
