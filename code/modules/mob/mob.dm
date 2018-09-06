@@ -151,16 +151,9 @@
 	if(M.get_preference_value(/datum/client_preference/ghost_sight) == GLOB.PREF_ALL_EMOTES && !(src in view(M)))
 		remote = "\[R\]"
 
-	var/speaker_name = name
-
-	if(speaker_name != real_name && real_name)
-		speaker_name = "[real_name]/([speaker_name])"
-
-	speaker_name = speaker_name
-
 	var/track = "([ghost_follow_link(src, M)])"
 
-	message = track + remote + " " + speaker_name + ": " + message
+	message = track + remote + " " + message
 	return message
 
 /mob/proc/ghost_skip_message(var/mob/observer/ghost/M)
@@ -1157,4 +1150,22 @@
 	selector.set_selected_zone(next_in_list(mob.zone_sel.selecting,zones))
 
 /mob/proc/has_chem_effect(chem, threshold)
+	return FALSE
+
+/mob/proc/has_admin_rights()
+	return check_rights(R_ADMIN, 0, src)
+
+/mob/proc/handle_drowning()
+	return FALSE
+
+/mob/proc/can_drown()
+	return 0
+
+/mob/is_fluid_pushable(var/amt)
+	if(..() && !buckled && (lying || !Check_Shoegrip()) && (amt >= mob_size * (lying ? 5 : 10)))
+		if(!lying)
+			Weaken(1)
+			if(lying && prob(10))
+				to_chat(src, "<span class='danger'>You are pushed down by the flood!</span>")
+		return TRUE
 	return FALSE

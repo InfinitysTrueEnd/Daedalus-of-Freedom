@@ -54,10 +54,9 @@ GLOBAL_VAR_INIT(arrest_security_status, "Arrest")
 
 	// Employment record
 	set_emplRecord(H && H.gen_record && !jobban_isbanned(H, "Records") ? html_decode(H.gen_record) : "No record supplied")
-	set_homeSystem(H ? html_decode(H.home_system) : "Unset")
-	set_citizenship(H ? html_decode(H.citizenship) : "Unset")
-	set_faction(H ? html_decode(H.personal_faction) : "Unset")
-	set_religion(H ? html_decode(H.religion) : "Unset")
+	set_homeSystem(H ? html_decode(H.get_cultural_value(TAG_HOMEWORLD)) : "Unset")
+	set_faction(H ? html_decode(H.get_cultural_value(TAG_FACTION)) : "Unset")
+	set_religion(H ? html_decode(H.get_cultural_value(TAG_RELIGION)) : "Unset")
 
 	if(H)
 		var/skills = list()
@@ -125,7 +124,7 @@ GLOBAL_VAR_INIT(arrest_security_status, "Arrest")
 /datum/computer_file/report/crew_record/proc/set_##KEY(given_value){var/datum/report_field/F = locate(/datum/report_field/##PATH/##KEY) in fields; if(F) F.set_value(given_value)}
 #define SETUP_FIELD(NAME, KEY, PATH, ACCESS, ACCESS_EDIT) GETTER_SETTER(PATH, KEY); /datum/report_field/##PATH/##KEY;\
 /datum/computer_file/report/crew_record/generate_fields(){..(); var/datum/report_field/##KEY = add_field(/datum/report_field/##PATH/##KEY, ##NAME);\
-KEY.set_access(ACCESS, ACCESS_EDIT || ACCESS || access_heads)}
+KEY.set_access(ACCESS, ACCESS_EDIT || ACCESS || access_bridge)}
 
 // Fear not the preprocessor, for it is a friend. To add a field, use one of these, depending on value type and if you need special access to see it.
 // It will also create getter/setter procs for record datum, named like /get_[key here]() /set_[key_here](value) e.g. get_name() set_name(value)
@@ -160,11 +159,10 @@ FIELD_SHORT("DNA", dna, access_security)
 FIELD_SHORT("Fingerprint", fingerprint, access_security)
 
 // EMPLOYMENT RECORDS
-FIELD_LONG("Employment Record", emplRecord, access_heads)
-FIELD_SHORT("Home System", homeSystem, access_heads)
-FIELD_SHORT("Citizenship", citizenship, access_heads)
-FIELD_SHORT("Faction", faction, access_heads)
-FIELD_LONG("Qualifications", skillset, access_heads)
+FIELD_LONG("Employment Record", emplRecord, access_bridge)
+FIELD_SHORT("Home System", homeSystem, access_bridge)
+FIELD_SHORT("Faction", faction, access_bridge)
+FIELD_LONG("Qualifications", skillset, access_bridge)
 
 // ANTAG RECORDS
 FIELD_LONG("Exploitable Information", antagRecord, access_syndicate)

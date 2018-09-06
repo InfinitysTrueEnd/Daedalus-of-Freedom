@@ -18,6 +18,7 @@
 	max_heat_protection_temperature = HELMET_MAX_HEAT_PROTECTION_TEMPERATURE
 	siemens_coefficient = 0.7
 	w_class = ITEM_SIZE_NORMAL
+	species_restricted = list("exclude", SPECIES_NABBER, SPECIES_ADHERENT)
 
 /obj/item/clothing/head/helmet/nt
 	name = "\improper corporate security helmet"
@@ -116,7 +117,6 @@
 	icon_state = "swathelm"
 	valid_accessory_slots = null
 	sprite_sheets = list(
-		SPECIES_TAJARA = 'icons/mob/species/tajaran/helmet.dmi',
 		SPECIES_UNATHI = 'icons/mob/species/unathi/helmet.dmi'
 		)
 
