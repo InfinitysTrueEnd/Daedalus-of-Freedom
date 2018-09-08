@@ -29,7 +29,7 @@ var/global/list/sparring_attack_cache = list()
 			sparring_attack_cache[sparring_variant_type] = new sparring_variant_type()
 		return sparring_attack_cache[sparring_variant_type]
 
-/datum/unarmed_attack/proc/is_usable(var/mob/living/carbon/human/user, var/mob/living/carbon/human/target, var/zone)
+/datum/unarmed_attack/proc/is_usable(var/mob/living/carbon/human/user, var/mob/target, var/zone)
 	if(user.restrained())
 		return 0
 
