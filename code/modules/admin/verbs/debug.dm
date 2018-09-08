@@ -572,3 +572,25 @@
 
 	images -= powernet_markers
 	QDEL_NULL_LIST(powernet_markers)
+
+/client/proc/CheckDB()
+	set category = "Debug"
+	set name = "Database Check"
+	if(!check_rights(R_DEBUG))	return
+
+	if(!dbcon.IsConnected()){
+		message_admins("Database is not connected.")
+	}
+
+	feedback_add_details("admin_verb","CDB") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+
+/client/proc/ReconDB()
+	set category = "Debug"
+	set name = "Database Reconnect"
+	if(!check_rights(R_DEBUG))	return
+
+	dbcon.Disconnect()
+	dbcon.Connect()
+	message_admins("Reconnected Database (Use CheckDB to check status)")
+
+	feedback_add_details("admin_verb","CDB") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
