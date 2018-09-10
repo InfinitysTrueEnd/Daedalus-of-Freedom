@@ -47,8 +47,8 @@
 		playsound(src, 'sound/items/Crowbar.ogg', 50, 1)
 		if(installed_gun.fire_delay)
 			cooldown_per_use = installed_gun.fire_delay * 10
-		if(cooldown_per_use<30)
-			cooldown_per_use = 30
+		if(cooldown_per_use < 30)
+			cooldown_per_use = 30 //If there's no defined fire delay let's put some
 		if(installed_gun.charge_cost)
 			power_draw_per_use = installed_gun.charge_cost
 		set_pin_data(IC_OUTPUT, 1, weakref(installed_gun))
