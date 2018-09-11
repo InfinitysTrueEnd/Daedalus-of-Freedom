@@ -1,4 +1,4 @@
-//MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
+//MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE 
 "aa" = (
 /turf/space,
 /area/space)
@@ -925,17 +925,6 @@
 	dir = 6
 	},
 /obj/machinery/atmospherics/pipe/simple/hidden/supply,
-/turf/simulated/floor/tiled/dark,
-/area/crew_quarters/heads/office/co)
-"cq" = (
-/obj/machinery/atmospherics/unary/vent_scrubber/on{
-	dir = 8
-	},
-/obj/structure/bed/chair/office/comfy/blue{
-	tag = "icon-comfyofficechair_preview (EAST)";
-	icon_state = "comfyofficechair_preview";
-	dir = 4
-	},
 /turf/simulated/floor/tiled/dark,
 /area/crew_quarters/heads/office/co)
 "cw" = (
@@ -12547,6 +12536,18 @@
 /obj/effect/paint/hull,
 /turf/simulated/wall/titanium,
 /area/aquila/airlock)
+"FX" = (
+/obj/machinery/atmospherics/unary/vent_scrubber/on{
+	dir = 8
+	},
+/obj/structure/bed/chair/office/comfy/blue{
+	tag = "icon-comfyofficechair_preview (EAST)";
+	icon_state = "comfyofficechair_preview";
+	dir = 4
+	},
+/obj/effect/landmark/start,
+/turf/simulated/floor/tiled/dark,
+/area/crew_quarters/heads/office/co)
 "Gb" = (
 /obj/machinery/atmospherics/pipe/simple/hidden/supply{
 	dir = 4
@@ -25447,7 +25448,7 @@ aj
 aj
 bq
 bN
-cq
+FX
 Td
 WI
 eq
