@@ -937,6 +937,9 @@
 	dir = 4
 	},
 /turf/simulated/floor/tiled/dark,
+/obj/effect/landmark/start{
+	name = "Commanding Officer"
+	},
 /area/crew_quarters/heads/office/co)
 "cw" = (
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,
