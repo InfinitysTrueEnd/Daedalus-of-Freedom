@@ -205,7 +205,7 @@
 	var/sound_player = /datum/sound_player
 
 /obj/structure/synthesized_instrument/Initialize()
-	..()
+	. = ..()
 	for (var/type in typesof(path))
 		var/datum/instrument/new_instrument = new type
 		if (!new_instrument.id) continue
@@ -254,10 +254,10 @@
 	icon = 'icons/obj/musician.dmi'
 	var/datum/instrument/instruments = list()
 	var/path = /datum/instrument
-	var/sound_player //Need path here
+	var/sound_player = /datum/sound_player
 
 /obj/item/device/synthesized_instrument/Initialize()
-	..()
+	. = ..()
 	for (var/type in typesof(path))
 		var/datum/instrument/new_instrument = new type
 		if (!new_instrument.id) continue
@@ -286,8 +286,7 @@
 
 
 /obj/item/device/synthesized_instrument/proc/shouldStopPlaying(mob/user)
-	return 0
-
+	return !(src && in_range(src, user))
 
 /obj/item/device/synthesized_instrument/Topic(href, href_list)
 	if (..())
