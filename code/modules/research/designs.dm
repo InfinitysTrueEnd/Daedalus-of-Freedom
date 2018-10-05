@@ -514,6 +514,27 @@ other types of metals and chemistry for reagents).
 	build_path = /obj/item/weapon/reagent_containers/glass/beaker/bluespace
 	sort_string = "MCAAB"
 
+/datum/design/item/syringe/AssembleDesignName()
+	name = "Syringe prototype ([item_name])"
+
+/datum/design/item/syringe/noreactsyringe
+	name = "Cryo Syringe"
+	desc = "An advanced syringe that stops reagents inside from reacting. It can hold up to 20 units."
+	id = "noreactsyringe"
+	req_tech = list(TECH_BIO = 4, TECH_MATERIAL = 4)
+	materials = list("glass" = 2000, "gold" = 1000)
+	build_path = /obj/item/weapon/reagent_containers/syringe/noreact
+	sort_string = "MCAAC"
+
+/datum/design/item/syringe/bluespacesyringe
+	name = "Bluespace Syringe"
+	desc = "An advanced syringe that can hold 60 units of chemicals"
+	id = "bluespacesyringe"
+	req_tech = list(TECH_BIO = 3, TECH_MATERIAL = 4, TECH_BLUESPACE = 2)
+	materials = list("glass" = 2000, "phoron" = 1000, "diamond" = 1000)
+	build_path = /obj/item/weapon/reagent_containers/syringe/bluespace
+	sort_string = "MCAAD"
+
 /datum/design/item/implant
 	materials = list(MATERIAL_STEEL = 50, MATERIAL_GLASS = 50)
 
@@ -1223,6 +1244,16 @@ other types of metals and chemistry for reagents).
 	build_path = /obj/item/weapon/computer_hardware/card_slot
 	sort_string = "VBADA"
 
+// Card Broadcaster
+/datum/design/item/modularcomponent/accessory/cardbroadcaster
+	name = "RFID card broadcaster"
+	id = "cardbroadcaster"
+	req_tech = list(TECH_DATA = 3)
+	build_type = PROTOLATHE
+	materials = list(MATERIAL_STEEL = 600)
+	build_path = /obj/item/weapon/computer_hardware/card_slot/broadcaster
+	sort_string = "VBADB"
+
 // inteliCard Slot
 /datum/design/item/modularcomponent/accessory/aislot
 	name = "inteliCard slot"
@@ -1232,7 +1263,7 @@ other types of metals and chemistry for reagents).
 	materials = list(MATERIAL_STEEL = 2000)
 	chemicals = list(/datum/reagent/acid = 20)
 	build_path = /obj/item/weapon/computer_hardware/ai_slot
-	sort_string = "VBADB"
+	sort_string = "VBADC"
 
 // Nano printer
 /datum/design/item/modularcomponent/accessory/nanoprinter
@@ -1242,7 +1273,7 @@ other types of metals and chemistry for reagents).
 	build_type = PROTOLATHE
 	materials = list(MATERIAL_STEEL = 600)
 	build_path = /obj/item/weapon/computer_hardware/nano_printer
-	sort_string = "VBADC"
+	sort_string = "VBADD"
 
 // Tesla Link
 /datum/design/item/modularcomponent/accessory/teslalink
@@ -1252,7 +1283,7 @@ other types of metals and chemistry for reagents).
 	build_type = PROTOLATHE
 	materials = list(MATERIAL_STEEL = 2000)
 	build_path = /obj/item/weapon/computer_hardware/tesla_link
-	sort_string = "VBADD"
+	sort_string = "VBADE"
 
 //Scanners
 /datum/design/item/modularcomponent/accessory/reagent_scanner
@@ -1262,7 +1293,7 @@ other types of metals and chemistry for reagents).
 	build_type = PROTOLATHE
 	materials = list(MATERIAL_STEEL = 600, MATERIAL_GLASS = 200)
 	build_path = /obj/item/weapon/computer_hardware/scanner/reagent
-	sort_string = "VBADE"
+	sort_string = "VBADF"
 
 /datum/design/item/modularcomponent/accessory/paper_scanner
 	name = "paper scanner module"
@@ -1271,7 +1302,7 @@ other types of metals and chemistry for reagents).
 	build_type = PROTOLATHE
 	materials = list(MATERIAL_STEEL = 600, MATERIAL_GLASS = 200)
 	build_path = /obj/item/weapon/computer_hardware/scanner/paper
-	sort_string = "VBADF"
+	sort_string = "VBADG"
 
 /datum/design/item/modularcomponent/accessory/atmos_scanner
 	name = "atmospheric scanner module"
@@ -1280,7 +1311,7 @@ other types of metals and chemistry for reagents).
 	build_type = PROTOLATHE
 	materials = list(MATERIAL_STEEL = 600, MATERIAL_GLASS = 200)
 	build_path = /obj/item/weapon/computer_hardware/scanner/atmos
-	sort_string = "VBADG"
+	sort_string = "VBADH"
 
 /datum/design/item/modularcomponent/accessory/medical_scanner
 	name = "medical scanner module"
@@ -1289,7 +1320,7 @@ other types of metals and chemistry for reagents).
 	build_type = PROTOLATHE
 	materials = list(MATERIAL_STEEL = 600, MATERIAL_GLASS = 200)
 	build_path = /obj/item/weapon/computer_hardware/scanner/medical
-	sort_string = "VBADH"
+	sort_string = "VBADI"
 
 // Batteries
 /datum/design/item/modularcomponent/battery/AssembleDesignName()
@@ -1608,6 +1639,32 @@ other types of metals and chemistry for reagents).
 	materials = list(MATERIAL_STEEL = 10000, MATERIAL_GLASS = 10000)
 	build_path = /obj/item/disk/integrated_circuit/upgrade/clone
 	sort_string = "WCLAE"
+
+// janitor gadgets
+
+/datum/design/item/advmop
+	name = "Advanced Mop"
+	desc = "An upgraded mop with a large internal capacity for holding water or other cleaning chemicals."
+	id = "advmop"
+	req_tech = list(TECH_ENGINEERING = 4, TECH_MATERIAL = 4, TECH_POWER = 3)
+	materials = list(MATERIAL_STEEL = 2500, MATERIAL_GLASS = 200)
+	build_path = /obj/item/weapon/mop/advanced
+
+/datum/design/blutrash
+	name = "Trashbag of Holding"
+	desc = "An advanced trash bag with bluespace properties; capable of holding a plethora of garbage."
+	id = "blutrash"
+	req_tech = list(TECH_BLUESPACE = 5, TECH_MATERIALS = 6)
+	materials = list(MATERIAL_GOLD = 1500, MATERIAL_URANIUM = 250, MATERIAL_PHORON = 1500)
+	build_path = /obj/item/weapon/storage/bag/trash/bluespace
+
+/datum/design/item/holosign
+	name = "Holographic Sign Projector"
+	desc = "A holograpic projector used to project various warning signs."
+	id = "holosign"
+	req_tech = list(TECH_ENGINEERING = 5, TECH_BLUESPACE = 4, TECH_POWER = 4)
+	materials = list(MATERIAL_STEEL = 2000, MATERIAL_GLASS = 1000)
+	build_path = /obj/item/holosign_creator
 
 /*
 CIRCUITS BELOW
