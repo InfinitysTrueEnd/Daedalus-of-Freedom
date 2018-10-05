@@ -171,6 +171,8 @@ var/list/admin_verbs_debug = list(
 	/datum/admins/proc/jump_to_fluid_active,
 	/client/proc/cmd_admin_list_open_jobs,
 	/client/proc/Debug2,
+	/client/proc/CheckDB,
+	/client/proc/ReconDB,
 	/client/proc/kill_air,
 	/client/proc/ZASSettings,
 	/client/proc/cmd_debug_make_powernets,

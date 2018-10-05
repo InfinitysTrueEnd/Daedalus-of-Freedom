@@ -86,7 +86,7 @@
 					/obj/item/weapon/reagent_containers/hypospray/autoinjector = 1,
 					/obj/item/stack/medical/bruise_pack = 1,
 					/obj/item/device/flashlight/flare/glowstick = 1,
-					/obj/item/weapon/reagent_containers/food/snacks/candy/proteinbar = 1,
+					/obj/item/weapon/reagent_containers/food/snacks/liquidfood = 1,
 					/obj/item/device/oxycandle = 1)
 
 /obj/item/weapon/storage/box/vox/
@@ -97,7 +97,7 @@
 					/obj/item/weapon/tank/emergency/nitrogen = 1,
 					/obj/item/stack/medical/bruise_pack = 1,
 					/obj/item/device/flashlight/flare/glowstick = 1,
-					/obj/item/weapon/reagent_containers/food/snacks/candy/proteinbar = 1)
+					/obj/item/weapon/reagent_containers/food/snacks/liquidfood = 1)
 
 /obj/item/weapon/storage/box/engineer/
 	name = "engineer survival kit"
@@ -109,7 +109,7 @@
 					/obj/item/weapon/reagent_containers/hypospray/autoinjector/antirad = 1,
 					/obj/item/stack/medical/bruise_pack = 1,
 					/obj/item/device/flashlight/flare/glowstick = 1,
-					/obj/item/weapon/reagent_containers/food/snacks/candy/proteinbar = 1,
+					/obj/item/weapon/reagent_containers/food/snacks/liquidfood = 1,
 					/obj/item/device/oxycandle = 1)
 
 /obj/item/weapon/storage/box/gloves

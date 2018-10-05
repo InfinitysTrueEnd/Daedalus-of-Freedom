@@ -633,7 +633,7 @@ var/world_topic_spam_protect_time = world.timeofday
 #undef WORLD_SETUP_LOG
 #undef WORLD_LOG_START
 
-#define FAILED_DB_CONNECTION_CUTOFF 5
+#define FAILED_DB_CONNECTION_CUTOFF 999 //The database is used for some important stuff, just keep trying okay? --Alice
 var/failed_db_connections = 0
 var/failed_old_db_connections = 0
 
