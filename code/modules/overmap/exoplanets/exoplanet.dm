@@ -22,8 +22,10 @@
 
 	var/features_budget = 2
 	//pre-defined list of features templates to pick from
-	var/list/possible_features = list(/datum/map_template/ruin/exoplanet/monolith,
-									  /datum/map_template/ruin/exoplanet/hydrobase)
+	var/list/possible_features = list(
+									/datum/map_template/ruin/exoplanet/monolith,
+									/datum/map_template/ruin/exoplanet/hydrobase,
+									/datum/map_template/ruin/exoplanet/crashed_pod)
 
 /obj/effect/overmap/sector/exoplanet/New(nloc, max_x, max_y)
 	if(!GLOB.using_map.use_overmap)
@@ -219,6 +221,7 @@
 			newgases -= "phoron"
 		if(prob(50)) //alium gas should be slightly less common than mundane shit
 			newgases -= "aliether"
+		newgases -= "watervapor"
 
 		var/sanity = prob(99.9)
 
@@ -378,8 +381,9 @@
 	for(var/i = 1 to flora_diversity)
 		var/datum/seed/S = new()
 		S.randomize()
-		S.set_trait(TRAIT_PRODUCT_ICON,"alien[rand(1,5)]")
-		S.set_trait(TRAIT_PLANT_ICON,"alien[rand(1,4)]")
+		var/planticon = "alien[rand(1,4)]"
+		S.set_trait(TRAIT_PRODUCT_ICON,planticon)
+		S.set_trait(TRAIT_PLANT_ICON,planticon)
 		var/color = pick(plantcolors)
 		if(color == "RANDOM")
 			color = get_random_colour(0,75,190)
