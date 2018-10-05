@@ -24,10 +24,12 @@
 	blood_volume = 800
 
 	health_hud_intensity = 2
-	hunger_factor = DEFAULT_HUNGER_FACTOR * 3
+	hunger_factor = DEFAULT_HUNGER_FACTOR * 2
 
 	min_age = 18
 	max_age = 260
+
+	body_temperature = null // cold-blooded, implemented the same way nabbers do it
 
 	description = "A heavily reptillian species, Unathi (or 'Sinta as they call themselves) hail from the \
 	Uuosa-Eso system, which roughly translates to 'burning mother'.<br/><br/>Coming from a harsh, radioactive \
@@ -124,3 +126,6 @@
 		M.emote(pick("twitch", "drool"))
 	if(effective_dose > 20 && prob(10))
 		M.SelfMove(pick(GLOB.cardinal))
+
+/datum/species/unathi/get_bodytype(var/mob/living/carbon/human/H)
+	return SPECIES_UNATHI

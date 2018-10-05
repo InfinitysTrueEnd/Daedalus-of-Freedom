@@ -4,12 +4,9 @@
 	path = "torch"
 	flags = MAP_HAS_BRANCH | MAP_HAS_RANK
 
-	station_levels = list(1,2,3,4,5)
-	contact_levels = list(1,2,3,4,5)
-	player_levels = list(1,2,3,4,5,8)
-	admin_levels = list(6,7)
-	empty_levels = list(8)
-	accessible_z_levels = list("1"=1,"2"=1,"3"=1,"4"=1,"5"=1,"8"=30)
+	admin_levels = list(7,8)
+	empty_levels = list(9)
+	accessible_z_levels = list("1"=1,"2"=3,"3"=1,"4"=1,"5"=1,"6"=1,"9"=30)
 	overmap_size = 35
 	overmap_event_areas = 34
 	usable_email_tlds = list("torch.ec.scg", "torch.fleet.mil", "freemail.net", "torch.scg")
@@ -55,12 +52,12 @@
 	to_chat(victim, "This area of space is uncharted, away from SCG territory. You might encounter remote outposts or drifting hulks, but no recognized government holds claim on this sector.")
 
 /datum/map/torch/send_welcome()
-	var/welcome_text = "<center><img src = sollogo.png /><br /><font size = 3><b>SEV Torch</b> Sensor Readings:</font><hr />"
+	var/welcome_text = "<center><img src = sollogo.png /><br /><font size = 3><b>SEV Torch</b> Sensor Readings:</font><br>"
 	welcome_text += "Report generated on [stationdate2text()] at [stationtime2text()]</center><br /><br />"
-	welcome_text += "Current system:<br /><b>[system_name()]</b><br />"
-	welcome_text += "Next system targeted for jump:<br /><b>[generate_system_name()]</b><br />"
-	welcome_text += "Travel time to Sol:<br /><b>[rand(15,45)] days</b><br />"
-	welcome_text += "Time since last port visit:<br /><b>[rand(60,180)] days</b><br />"
+	welcome_text += "<hr>Current system:<br /><b>[system_name()]</b><br /><br>"
+	welcome_text += "Next system targeted for jump:<br /><b>[generate_system_name()]</b><br /><br>"
+	welcome_text += "Travel time to Sol:<br /><b>[rand(15,45)] days</b><br /><br>"
+	welcome_text += "Time since last port visit:<br /><b>[rand(60,180)] days</b><br /><hr>"
 	welcome_text += "Scan results show the following points of interest:<br />"
 	var/list/space_things = list()
 	var/obj/effect/overmap/torch = map_sectors["1"]
@@ -70,15 +67,23 @@
 			continue
 		space_things |= O
 
+	var/list/distress_calls
 	for(var/obj/effect/overmap/O in space_things)
 		var/location_desc = " at present co-ordinates."
-		if (O.loc != torch.loc)
+		if(O.loc != torch.loc)
 			var/bearing = round(90 - Atan2(O.x - torch.x, O.y - torch.y),5) //fucking triangles how do they work
 			if(bearing < 0)
 				bearing += 360
 			location_desc = ", bearing [bearing]."
+		if(O.has_distress_beacon)
+			LAZYADD(distress_calls, "[O.has_distress_beacon][location_desc]")
 		welcome_text += "<li>\A <b>[O.name]</b>[location_desc]</li>"
-	welcome_text += "<br>No distress calls logged.<br />"
+
+	if(LAZYLEN(distress_calls))
+		welcome_text += "<br><b>Distress calls logged:</b><br>[jointext(distress_calls, "<br>")]<br>"
+	else
+		welcome_text += "<br>No distress calls logged.<br />"
+	welcome_text += "<hr>"
 
 	post_comm_message("SEV Torch Sensor Readings", welcome_text)
 	minor_announcement.Announce(message = "New [GLOB.using_map.company_name] Update available at all communication consoles.")
@@ -94,3 +99,13 @@
 
 /decl/flooring/tiling
 	name = "deck"
+
+/obj/machinery/computer/rdconsole/petrov
+	name = "petrov fabricator console"
+	id = 3
+
+/turf/simulated/floor/shuttle_ceiling/torch
+	color = COLOR_HULL
+
+/turf/simulated/floor/shuttle_ceiling/torch/air
+	initial_gas = list("oxygen" = MOLES_O2STANDARD, "nitrogen" = MOLES_N2STANDARD)

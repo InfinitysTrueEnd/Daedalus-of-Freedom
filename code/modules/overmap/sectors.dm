@@ -21,6 +21,8 @@
 	var/known = 1		//shows up on nav computers automatically
 	var/in_space = 1	//can be accessed via lucky EVA
 
+	var/has_distress_beacon
+
 /obj/effect/overmap/Initialize()
 	. = ..()
 	if(!GLOB.using_map.use_overmap)
@@ -57,6 +59,7 @@
 	if(base)
 		GLOB.using_map.station_levels |= map_z
 		GLOB.using_map.contact_levels |= map_z
+		GLOB.using_map.map_levels |= map_z
 
 //Helper for init.
 /obj/effect/overmap/proc/check_ownership(obj/object)
