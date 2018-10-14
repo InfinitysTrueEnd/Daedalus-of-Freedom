@@ -538,7 +538,7 @@
 
 	access = list(access_mining_office,
 						access_mining_station, access_expedition_shuttle, access_expedition_shuttle_helm, access_guppy,
-						access_hangar, access_guppy_helm, access_mining, access_pilot, access_solgov_crew, access_eva)
+						access_hangar, access_guppy_helm, access_mining, access_pilot, access_solgov_crew, access_eva, access_explorer)
 	min_skill = list(	SKILL_EVA   = SKILL_BASIC,
 						SKILL_PILOT = SKILL_ADEPT)
 
@@ -1642,10 +1642,10 @@
 	total_positions = 3
 	spawn_positions = 3
 	supervisors = "your laws"
-	minimal_player_age = 0
+	minimal_player_age = 3
 
 /datum/job/ai
-	minimal_player_age = 3
+	minimal_player_age = 7
 
 /datum/job/merchant
 	title = "Merchant"

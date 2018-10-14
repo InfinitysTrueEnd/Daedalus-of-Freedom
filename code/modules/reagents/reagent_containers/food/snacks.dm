@@ -143,10 +143,12 @@
 			I.color = src.filling_color
 			U.overlays += I
 
-			reagents.trans_to_obj(U, min(reagents.total_volume,5))
-
-			if (reagents.total_volume <= 0)
-				qdel(src)
+			if(!reagents)
+				crash_with("A snack [type] failed to have a reagent holder when attacked with a [W.type]. It was [QDELETED(src) ? "" : "not"] being deleted.")
+			else
+				reagents.trans_to_obj(U, min(reagents.total_volume,5))
+				if (reagents.total_volume <= 0)
+					qdel(src)
 			return
 
 	if (is_sliceable())
@@ -262,6 +264,7 @@
 	filling_color = "#fdffd1"
 	volume = 10
 	center_of_mass = "x=16;y=13"
+
 /obj/item/weapon/reagent_containers/food/snacks/egg/Initialize()
 	.=..()
 	reagents.add_reagent(/datum/reagent/nutriment/protein/egg, 3)
@@ -276,10 +279,12 @@
 	qdel(src)
 
 /obj/item/weapon/reagent_containers/food/snacks/egg/throw_impact(atom/hit_atom)
-	..()
+	if(QDELETED(src))
+		return // Could potentially happen with unscupulous atoms on hitby() throwing again, etc.
 	new/obj/effect/decal/cleanable/egg_smudge(src.loc)
-	src.reagents.splash(hit_atom, reagents.total_volume)
-	src.visible_message("<span class='warning'>\The [src] has been squashed!</span>","<span class='warning'>You hear a smack.</span>")
+	reagents.splash(hit_atom, reagents.total_volume)
+	visible_message("<span class='warning'>\The [src] has been squashed!</span>","<span class='warning'>You hear a smack.</span>")
+	..()
 	qdel(src)
 
 /obj/item/weapon/reagent_containers/food/snacks/egg/attackby(obj/item/weapon/W as obj, mob/user as mob)
@@ -500,7 +505,7 @@
 	desc = "The food of choice for the veteran. Do <b>NOT</b> overconsume."
 	filling_color = "#6d6d00"
 	heated_reagents = list(/datum/reagent/drink/doctor_delight = 5, /datum/reagent/hyperzine = 0.75, /datum/reagent/synaptizine = 0.25)
-	var/has_been_heated = 0
+	var/has_been_heated = 0 // Unlike the warm var, this checks if the one-time self-heating operation has been used.
 
 /obj/item/weapon/reagent_containers/food/snacks/donkpocket/sinpocket/attack_self(mob/user)
 	if(has_been_heated)
@@ -508,9 +513,14 @@
 		return
 	has_been_heated = 1
 	user.visible_message("<span class='notice'>[user] crushes \the [src] package.</span>", "You crush \the [src] package and feel a comfortable heat build up.")
-	spawn(200)
-		to_chat(user, "You think \the [src] is ready to eat about now.")
-		heat()
+	addtimer(CALLBACK(src, .proc/heat, weakref(user)), 20 SECONDS)
+
+/obj/item/weapon/reagent_containers/food/snacks/donkpocket/sinpocket/heat(weakref/message_to)
+	..()
+	if(message_to)
+		var/mob/user = message_to.resolve()
+		if(user)
+			to_chat(user, "You think \the [src] is ready to eat about now.")
 
 /obj/item/weapon/reagent_containers/food/snacks/donkpocket
 	name = "\improper Donk-pocket"
@@ -528,20 +538,22 @@
 	reagents.add_reagent(/datum/reagent/nutriment/protein, 2)
 
 /obj/item/weapon/reagent_containers/food/snacks/donkpocket/proc/heat()
+	if(warm)
+		return
 	warm = 1
 	for(var/reagent in heated_reagents)
 		reagents.add_reagent(reagent, heated_reagents[reagent])
 	bitesize = 6
 	SetName("warm " + name)
-	cooltime()
+	addtimer(CALLBACK(src, .proc/cool), 7 MINUTES)
 
-/obj/item/weapon/reagent_containers/food/snacks/donkpocket/proc/cooltime()
-	if (src.warm)
-		spawn(4200)
-			src.warm = 0
-			for(var/reagent in heated_reagents)
-				src.reagents.del_reagent(reagent)
-			src.SetName(initial(name))
+/obj/item/weapon/reagent_containers/food/snacks/donkpocket/proc/cool()
+	if(!warm)
+		return
+	warm = 0
+	for(var/reagent in heated_reagents)
+		reagents.del_reagent(reagent)
+	SetName(initial(name))
 
 /obj/item/weapon/reagent_containers/food/snacks/brainburger
 	name = "brainburger"
@@ -1306,6 +1318,8 @@
 	reagents.add_reagent(/datum/reagent/frostoil, 3)
 	reagents.add_reagent(/datum/reagent/drink/juice/tomato, 2)
 
+//cubed animals!
+
 /obj/item/weapon/reagent_containers/food/snacks/monkeycube
 	name = "monkey cube"
 	desc = "Just add water!"
@@ -1385,81 +1399,16 @@
 	name = "neaera cube"
 	monkey_type = /mob/living/carbon/human/neaera
 
-//More cubes!
 
-/obj/item/weapon/reagent_containers/food/snacks/monkeycube/catcube
-	name = "cat cube"
-	monkey_type = /mob/living/simple_animal/cat
+//Spider cubes, all that's left of the cube PR
 
-/obj/item/weapon/reagent_containers/food/snacks/monkeycube/wrapped/catcube
-	name = "cat cube"
-	monkey_type = /mob/living/simple_animal/cat
+/obj/item/weapon/reagent_containers/food/snacks/monkeycube/spidercube
+	name = "spider cube"
+	monkey_type = /obj/effect/spider/spiderling
 
-/obj/item/weapon/reagent_containers/food/snacks/monkeycube/kcatcube
-	name = "kitten cube"
-	monkey_type = /mob/living/simple_animal/cat/kitten
-
-/obj/item/weapon/reagent_containers/food/snacks/monkeycube/wrapped/kcatcube
-	name = "kitten cube"
-	monkey_type = /mob/living/simple_animal/cat/kitten
-
-/obj/item/weapon/reagent_containers/food/snacks/monkeycube/corgicube
-	name = "corgi cube"
-	monkey_type = /mob/living/simple_animal/corgi
-
-/obj/item/weapon/reagent_containers/food/snacks/monkeycube/wrapped/corgicube
-	name = "corgi cube"
-	monkey_type = /mob/living/simple_animal/corgi
-
-/obj/item/weapon/reagent_containers/food/snacks/monkeycube/pcorgicube
-	name = "corgi puppy cube"
-	monkey_type = /mob/living/simple_animal/corgi/puppy
-
-/obj/item/weapon/reagent_containers/food/snacks/monkeycube/wrapped/pcorgicube
-	name = "corgi puppy cube"
-	monkey_type = /mob/living/simple_animal/corgi/puppy
-
-/obj/item/weapon/reagent_containers/food/snacks/monkeycube/cowcube
-	name = "cow cube"
-	monkey_type = /mob/living/simple_animal/cow
-
-/obj/item/weapon/reagent_containers/food/snacks/monkeycube/wrapped/cowcube
-	name = "cow cube"
-	monkey_type = /mob/living/simple_animal/cow
-
-/obj/item/weapon/reagent_containers/food/snacks/monkeycube/goatcube
-	name = "goat cube"
-	monkey_type = /mob/living/simple_animal/hostile/retaliate/goat
-
-/obj/item/weapon/reagent_containers/food/snacks/monkeycube/wrapped/goatcube
-	name = "goat cube"
-	monkey_type = /mob/living/simple_animal/hostile/retaliate/goat
-
-/obj/item/weapon/reagent_containers/food/snacks/monkeycube/chickencube
-	name = "chicken cube"
-	monkey_type = /mob/living/simple_animal/chicken
-
-/obj/item/weapon/reagent_containers/food/snacks/monkeycube/wrapped/chickencube
-	name = "chicken cube"
-	monkey_type = /mob/living/simple_animal/chicken
-
-/obj/item/weapon/reagent_containers/food/snacks/monkeycube/chickcube
-	name = "chick cube"
-	monkey_type = /mob/living/simple_animal/chick
-
-/obj/item/weapon/reagent_containers/food/snacks/monkeycube/wrapped/chickcube
-	name = "chick cube"
-	monkey_type = /mob/living/simple_animal/chick
-
-//Slime Cubes: Bit experimental: May need to tweak the reagent used to activate them to avoid double-tapping your specimen to death by accident.
-
-/obj/item/weapon/reagent_containers/food/snacks/monkeycube/slimecube
-	name = "slime cube (grey)"
-	monkey_type = /mob/living/carbon/slime
-
-/obj/item/weapon/reagent_containers/food/snacks/monkeycube/wrapped/slimecube
-	name = "slime cube (grey)"
-	monkey_type = /mob/living/carbon/slime
+/obj/item/weapon/reagent_containers/food/snacks/monkeycube/wrapped/spidercube
+	name = "spider cube"
+	monkey_type = /obj/effect/spider/spiderling
 
 /obj/item/weapon/reagent_containers/food/snacks/spellburger
 	name = "spell burger"
@@ -2642,7 +2591,7 @@
 	var/list/boxes = list()// If the boxes are stacked, they come here
 	var/boxtag = ""
 
-/obj/item/pizzabox/update_icon()
+/obj/item/pizzabox/on_update_icon()
 
 	overlays = list()
 
