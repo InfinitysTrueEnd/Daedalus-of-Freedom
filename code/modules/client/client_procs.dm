@@ -198,7 +198,7 @@
 
 	if(holder)
 		src.control_freak = 0 //Devs need 0 for profiler access
-
+	send2mainirc("[src.key] has connected to the server.")
 	for(var/client/target in GLOB.clients)
 		if(!target)
 			continue
@@ -211,6 +211,7 @@
 	//DISCONNECT//
 	//////////////
 /client/Del()
+	send2mainirc("[src.key] has left the server.")
 	ticket_panels -= src
 	if(src && watched_variables_window)
 		STOP_PROCESSING(SSprocessing, watched_variables_window)
