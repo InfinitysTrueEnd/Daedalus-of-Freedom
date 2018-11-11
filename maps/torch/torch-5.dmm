@@ -16674,9 +16674,6 @@
 /turf/simulated/floor/tiled/techfloor,
 /area/maintenance/bridge/aftport)
 "ZR" = (
-/obj/item/weapon/card/id/torch/captains_spare{
-	name = "commanding officer's lost ID"
-	},
 /obj/effect/gibspawner/human,
 /turf/space,
 /area/space)
