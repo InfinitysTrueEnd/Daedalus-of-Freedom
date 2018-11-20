@@ -8,6 +8,7 @@
 	desc = "A conveyor belt."
 	layer = BELOW_OBJ_LAYER	// so they appear under stuff
 	anchored = 1
+
 	var/operating = 0	// 1 if running forward, -1 if backwards, 0 if off
 	var/operable = 1	// true if can operate (no broken segments in this belt run)
 	var/forwards		// this is the default (forward) direction, set by the map dir
@@ -47,7 +48,7 @@
 	else operating = 0
 	update_icon()
 
-/obj/machinery/conveyor/update_icon()
+/obj/machinery/conveyor/on_update_icon()
 	if(stat & BROKEN)
 		icon_state = "conveyor-broken"
 		operating = 0
@@ -178,7 +179,7 @@
 
 // update the icon depending on the position
 
-/obj/machinery/conveyor_switch/update_icon()
+/obj/machinery/conveyor_switch/on_update_icon()
 	if(position<0)
 		icon_state = "switch-rev"
 	else if(position>0)

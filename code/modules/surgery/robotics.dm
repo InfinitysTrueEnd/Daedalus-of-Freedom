@@ -43,7 +43,7 @@
 /datum/surgery_step/robotics/unscrew_hatch
 	allowed_tools = list(
 		/obj/item/weapon/screwdriver = 100,
-		/obj/item/weapon/coin = 50,
+		/obj/item/weapon/material/coin = 50,
 		/obj/item/weapon/material/kitchen/utensil/knife = 50
 	)
 
@@ -78,7 +78,7 @@
 /datum/surgery_step/robotics/screw_hatch
 	allowed_tools = list(
 		/obj/item/weapon/screwdriver = 100,
-		/obj/item/weapon/coin = 50,
+		/obj/item/weapon/material/coin = 50,
 		/obj/item/weapon/material/kitchen/utensil/knife = 50
 	)
 
@@ -481,6 +481,11 @@
 	var/organ_to_replace = input(user, "Which organ do you want to reattach?") as null|anything in removable_organs
 	if(!organ_to_replace)
 		return 0
+
+	var/obj/item/organ/internal/augment/A = organ_to_replace
+	if(istype(A))
+		if(!(A.augment_flags & AUGMENTATION_MECHANIC))
+			to_chat(user, SPAN_WARNING("\the [A] cannot function within a robotic limb"))
 
 	target.op_stage.current_organ = organ_to_replace
 	return ..()

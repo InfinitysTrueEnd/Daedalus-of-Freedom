@@ -65,7 +65,7 @@
 	var/cavity_name = "cavity"
 
 	// Surgery vars.
-	var/cavity_max_w_class = 0
+	var/cavity_max_w_class = ITEM_SIZE_TINY //this is increased if bigger organs spawn by default inside
 	var/hatch_state = 0
 	var/stage = 0
 	var/cavity = 0
@@ -108,6 +108,7 @@
 
 	if(parent && parent.children)
 		parent.children -= src
+		parent = null
 
 	if(children)
 		for(var/obj/item/organ/external/C in children)
@@ -167,7 +168,7 @@
 		if(I.obj_flags & OBJ_FLAG_CONDUCTIBLE)
 			burn_damage += I.w_class * rand(power, 3*power)
 
-	if(burn_damage)
+	if(owner && burn_damage)
 		owner.custom_pain("Something inside your [src] burns a [severity < 2 ? "bit" : "lot"]!", power * 15) //robotic organs won't feel it anyway
 		take_external_damage(0, burn_damage, 0, used_weapon = "Hot metal")
 
@@ -199,6 +200,10 @@
 			if(istype(I, /obj/item/organ))
 				continue
 			to_chat(usr, "<span class='danger'>There is \a [I] sticking out of it.</span>")
+		var/ouchies = get_wounds_desc()
+		if(ouchies != "nothing")
+			to_chat(usr, "<span class='notice'>There is [ouchies] visible on it.</span>")
+
 	return
 
 /obj/item/organ/external/show_decay_status(mob/user)
@@ -429,7 +434,7 @@ This function completely restores a damaged organ to perfect condition.
 		owner.updatehealth()
 
 	if(!QDELETED(src) && species)
-		species.post_organ_rejuvenate(src)
+		species.post_organ_rejuvenate(src, owner)
 
 /obj/item/organ/external/remove_rejuv()
 	if(owner)
@@ -437,35 +442,21 @@ This function completely restores a damaged organ to perfect condition.
 		owner.organs_by_name[organ_tag] = null
 		owner.organs_by_name -= organ_tag
 		while(null in owner.organs) owner.organs -= null
-	if(children && children.len)
+	if(LAZYLEN(children))
 		for(var/obj/item/organ/external/E in children)
 			E.remove_rejuv()
-	children.Cut()
+		children.Cut()
 	for(var/obj/item/organ/internal/I in internal_organs)
 		I.remove_rejuv()
 	..()
 
 /obj/item/organ/external/proc/createwound(var/type = CUT, var/damage, var/surgical)
 
-	// Handle some status-based damage multipliers.
-	if(type == BRUISE && BP_IS_BRITTLE(src))
-		damage = Floor(damage * 1.5)
-
-	if(BP_IS_CRYSTAL(src))
-		// this needs to cover type == BURN because lasers don't use LASER, but with the way bodytemp
-		// damage is handled currently that isn't really possible without an infinite feedback loop.
-		if(type == LASER)
-			owner.bodytemperature += ceil(damage/10)
-			if(prob(25))
-				owner.visible_message("<span class='warning'>\The [owner]'s crystalline [name] shines with absorbed energy!</span>")
-			return
-		damage = Floor(damage * 0.8)
-		type = SHATTER
-
 	if(damage <= 0)
 		return
 
-	if(loc && type == SHATTER)
+	if(BP_IS_CRYSTAL(src))
+		type = SHATTER
 		playsound(loc, 'sound/effects/hit_on_shattered_glass.ogg', 40, 1) // Crash!
 
 	//moved these before the open_wound check so that having many small wounds for example doesn't somehow protect you from taking internal damage (because of the return)
@@ -895,7 +886,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 		if(DROPLIMB_BLUNT)
 			var/obj/gore
 			if(BP_IS_CRYSTAL(src))
-				gore = new /obj/item/weapon/material/shard(get_turf(victim), "crystal")
+				gore = new /obj/item/weapon/material/shard(get_turf(victim), MATERIAL_CRYSTAL)
 			else if(BP_IS_ROBOTIC(src))
 				gore = new /obj/effect/decal/cleanable/blood/gibs/robot(get_turf(victim))
 			else

@@ -4,7 +4,7 @@
 /proc/export2irc(params)
 	if(config.use_irc_bot && config.irc_bot_host)
 		spawn(-1) // spawn here prevents hanging in the case that the bot isn't reachable
-			world.Export("http://[config.irc_bot_host]:45678?[list2params(params)]")
+			world.Export("http://[config.irc_bot_host]:45678/?[list2params(params)]")
 
 /proc/runtimes2irc(runtimes, revision)
 	export2irc(list(pwd=config.comms_password, type="runtime", runtimes=runtimes, revision=revision))

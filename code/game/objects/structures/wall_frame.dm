@@ -7,7 +7,7 @@
 	icon = 'icons/obj/wall_frame.dmi'
 	icon_state = "frame"
 
-	atom_flags = ATOM_FLAG_CLIMBABLE
+	atom_flags = ATOM_FLAG_NO_TEMP_CHANGE | ATOM_FLAG_CLIMBABLE
 	anchored = 1
 	density = 1
 	throwpass = 1
@@ -76,7 +76,7 @@
 					return
 
 			var/wtype = ST.material.created_window
-			if (ST.use(1))
+			if (ST.use(4))
 				var/obj/structure/window/WD = new wtype(loc, 5, 1)
 				to_chat(user, "<span class='notice'>You place the [WD] on [src].</span>")
 				WD.update_connections(1)
@@ -111,7 +111,7 @@
 
 // icon related
 
-/obj/structure/wall_frame/update_icon()
+/obj/structure/wall_frame/on_update_icon()
 	overlays.Cut()
 	var/image/I
 

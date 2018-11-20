@@ -6,6 +6,10 @@
 /turf/simulated/floor/holofloor
 	thermal_conductivity = 0
 
+// the new Diona Death Prevention Feature: gives an average amount of lumination
+/turf/simulated/floor/holofloor/get_lumcount(var/minlum = 0, var/maxlum = 1)
+	return 0.8
+
 /turf/simulated/floor/holofloor/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	return
 	// HOLOFLOOR DOES NOT GIVE A FUCK
@@ -235,7 +239,7 @@
 	throw_range = 5
 	throwforce = 0
 	w_class = ITEM_SIZE_SMALL
-	atom_flags = ATOM_FLAG_NO_BLOOD
+	atom_flags = ATOM_FLAG_NO_TEMP_CHANGE | ATOM_FLAG_NO_BLOOD
 	base_parry_chance = 50
 	var/active = 0
 	var/item_color
@@ -410,7 +414,7 @@
 	if(numbuttons == numready)
 		begin_event()
 
-/obj/machinery/readybutton/update_icon()
+/obj/machinery/readybutton/on_update_icon()
 	if(ready)
 		icon_state = "auth_on"
 	else
@@ -444,7 +448,7 @@
 
 /mob/living/simple_animal/hostile/carp/holodeck/proc/set_safety(var/safe)
 	if (safe)
-		faction = "neutral"
+		faction = MOB_FACTION_NEUTRAL
 		melee_damage_lower = 0
 		melee_damage_upper = 0
 		environment_smash = 0

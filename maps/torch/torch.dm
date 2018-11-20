@@ -34,7 +34,6 @@
 	#include "items/rigs.dm"
 	#include "items/solbanner.dm"
 
-	#include "items/clothing/clothing.dm"
 	#include "items/clothing/solgov-accessory.dm"
 	#include "items/clothing/solgov-armor.dm"
 	#include "items/clothing/solgov-feet.dm"
@@ -42,9 +41,18 @@
 	#include "items/clothing/solgov-suit.dm"
 	#include "items/clothing/solgov-under.dm"
 
-	#include "job/access.dm"
-	#include "job/jobs.dm"
-	#include "job/outfits.dm"
+	#include "job/torch_access.dm"
+	#include "job/torch_outfits.dm"
+	#include "job/torch_jobs.dm"
+	#include "job/command_jobs.dm"
+	#include "job/engineering_jobs.dm"
+	#include "job/exploration_jobs.dm"
+	#include "job/medical_jobs.dm"
+	#include "job/misc_jobs.dm"
+	#include "job/research_jobs.dm"
+	#include "job/security_jobs.dm"
+	#include "job/service_jobs.dm"
+	#include "job/supply_jobs.dm"
 
 	#include "machinery/keycard authentication.dm"
 
@@ -71,6 +79,7 @@
 	#include "loadout/loadout_xeno.dm"
 	#include "loadout/~defines.dm"
 
+	#include "torch-0.dmm"
 	#include "torch-1.dmm"
 	#include "torch-2.dmm"
 	#include "torch-3.dmm"
@@ -93,6 +102,7 @@
 	#include "../away/icarus/icarus.dm"
 	#include "../away/errant_pisces/errant_pisces.dm"
 	#include "../away/lar_maria/lar_maria.dm"
+	#include "../away/unishi/unishi.dm"
 
 	#include "../../code/datums/music_tracks/chasing_time.dm"
 

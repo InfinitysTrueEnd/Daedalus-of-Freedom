@@ -95,12 +95,21 @@ obj/machinery/recharger/emp_act(severity)
 			C.emp_act(severity)
 	..(severity)
 
-obj/machinery/recharger/update_icon()	//we have an update_icon() in addition to the stuff in process to make it feel a tiny bit snappier.
+obj/machinery/recharger/on_update_icon()	//we have an update_icon() in addition to the stuff in process to make it feel a tiny bit snappier.
 	if(charging)
 		icon_state = icon_state_charging
 	else
 		icon_state = icon_state_idle
 
+obj/machinery/recharger/examine(mob/user)
+	. = ..()
+	if(!. || isnull(charging))
+		return
+
+	else
+		var/obj/item/weapon/cell/C = charging.get_cell()
+		if(!isnull(C))
+			to_chat(user, "Item's charge at [round(C.percent())]%.")
 
 obj/machinery/recharger/wallcharger
 	name = "wall recharger"

@@ -173,7 +173,7 @@
 
 /mob/living/UnarmedAttack(var/atom/A, var/proximity_flag)
 
-	if(!ticker)
+	if(GAME_STATE < RUNLEVEL_GAME)
 		to_chat(src, "You cannot attack people before the game has started.")
 		return 0
 
@@ -252,6 +252,9 @@
 	Unused except for AI
 */
 /mob/proc/AltClickOn(var/atom/A)
+	var/datum/extension/on_click/alt = get_extension(A, /datum/extension/on_click/alt)
+	if(alt && alt.on_click(src))
+		return
 	A.AltClick(src)
 
 /atom/proc/AltClick(var/mob/user)
@@ -336,12 +339,17 @@
 	if(direction != dir)
 		facedir(direction)
 
+GLOBAL_LIST_INIT(click_catchers, create_click_catcher())
+
 /obj/screen/click_catcher
 	icon = 'icons/mob/screen_gen.dmi'
 	icon_state = "click_catcher"
 	plane = CLICKCATCHER_PLANE
 	mouse_opacity = 2
 	screen_loc = "CENTER-7,CENTER-7"
+
+/obj/screen/click_catcher/Destroy()
+	return QDEL_HINT_LETMELIVE
 
 /proc/create_click_catcher()
 	. = list()

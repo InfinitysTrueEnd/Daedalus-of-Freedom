@@ -21,7 +21,7 @@
 	use_alt_layer = !use_alt_layer
 	update_icon()
 
-/obj/item/weapon/storage/belt/update_icon()
+/obj/item/weapon/storage/belt/on_update_icon()
 	if (ismob(src.loc))
 		var/mob/M = src.loc
 		M.update_inv_belt()
@@ -83,7 +83,7 @@
 	var/datum/extension/holster/H = get_extension(src, /datum/extension/holster)
 	H.examine_holster(user)
 
-/obj/item/weapon/storage/belt/holster/update_icon()
+/obj/item/weapon/storage/belt/holster/on_update_icon()
 	if (ismob(src.loc))
 		var/mob/M = src.loc
 		M.update_inv_belt()
@@ -101,9 +101,6 @@
 /obj/item/weapon/storage/belt/utility
 	name = "tool belt"
 	desc = "A belt of durable leather, festooned with hooks, slots, and pouches."
-	description_info = "The tool-belt has enough slots to carry a full engineer's toolset: screwdriver, crowbar, wrench, welder, cable coil, and multitool. Simply click the belt to move a tool to one of its slots."
-	description_fluff = "Good hide is hard to come by in certain regions of the galaxy. When they can't come across it, most TSCs will outfit their crews with toolbelts made of synthesized leather."
-	description_antag = "Only amateurs skip grabbing a tool-belt."
 	icon_state = "utilitybelt"
 	item_state = "utility"
 	overlay_flags = BELT_OVERLAY_ITEMS
@@ -120,6 +117,7 @@
 		/obj/item/device/t_scanner,
 		/obj/item/device/analyzer,
 		/obj/item/taperoll/engineering,
+		/obj/item/inducer/,
 		/obj/item/device/robotanalyzer,
 		/obj/item/weapon/material/minihoe,
 		/obj/item/weapon/material/hatchet,
@@ -127,7 +125,8 @@
 		/obj/item/taperoll,
 		/obj/item/weapon/extinguisher/mini,
 		/obj/item/weapon/marshalling_wand,
-		/obj/item/weapon/hand_labeler
+		/obj/item/weapon/hand_labeler,
+		/obj/item/clothing/gloves
 		)
 
 
@@ -138,7 +137,7 @@
 	new /obj/item/weapon/weldingtool(src)
 	new /obj/item/weapon/crowbar(src)
 	new /obj/item/weapon/wirecutters(src)
-	new /obj/item/stack/cable_coil(src,30,pick("red","yellow","orange"))
+	new /obj/item/stack/cable_coil/random(src, 30)
 	update_icon()
 
 
@@ -181,7 +180,8 @@
 		/obj/item/taperoll,
 		/obj/item/weapon/extinguisher/mini,
 		/obj/item/weapon/storage/med_pouch,
-		/obj/item/bodybag
+		/obj/item/bodybag,
+		/obj/item/clothing/gloves
 		)
 
 /obj/item/weapon/storage/belt/medical/emt
@@ -210,7 +210,6 @@
 		/obj/item/weapon/melee/baton,
 		/obj/item/weapon/melee/telebaton,
 		/obj/item/weapon/flame/lighter,
-		/obj/item/clothing/glasses/hud/security,
 		/obj/item/device/flashlight,
 		/obj/item/modular_computer/pda,
 		/obj/item/device/radio/headset,
@@ -220,7 +219,8 @@
 		/obj/item/taperoll,
 		/obj/item/device/holowarrant,
 		/obj/item/weapon/magnetic_ammo,
-		/obj/item/device/binoculars
+		/obj/item/device/binoculars,
+		/obj/item/clothing/gloves
 		)
 
 /obj/item/weapon/storage/belt/general
@@ -231,14 +231,12 @@
 	overlay_flags = BELT_OVERLAY_ITEMS
 	can_hold = list(
 		/obj/item/device/flash,
-		/obj/item/weapon/melee/baton,
 		/obj/item/weapon/melee/telebaton,
 		/obj/item/device/taperecorder,
 		/obj/item/weapon/folder,
 		/obj/item/weapon/paper,
 		/obj/item/weapon/clipboard,
 		/obj/item/modular_computer/tablet,
-		/obj/item/device/flash,
 		/obj/item/device/flashlight,
 		/obj/item/modular_computer/pda,
 		/obj/item/device/radio/headset,
@@ -254,7 +252,31 @@
 		/obj/item/weapon/marshalling_wand,
 		/obj/item/device/camera,
 		/obj/item/weapon/hand_labeler,
-		/obj/item/device/destTagger
+		/obj/item/device/destTagger,
+		/obj/item/clothing/glasses,
+		/obj/item/clothing/head/soft,
+		/obj/item/weapon/hand_labeler,
+		/obj/item/clothing/gloves,
+		/obj/item/weapon/crowbar/prybar
+		)
+
+/obj/item/weapon/storage/belt/janitor
+	name = "janibelt"
+	desc = "A belt used to hold most janitorial supplies."
+	icon_state = "janibelt"
+	item_state = "janibelt"
+	storage_slots = 6
+	can_hold = list(
+		/obj/item/weapon/grenade/chem_grenade,
+		/obj/item/device/lightreplacer,
+		/obj/item/device/flashlight,
+		/obj/item/weapon/reagent_containers/spray/cleaner,
+		/obj/item/weapon/soap,
+		/obj/item/holosign_creator,
+		/obj/item/clothing/gloves,
+		/obj/item/device/assembly/mousetrap,
+		/obj/item/weapon/crowbar/prybar,
+		/obj/item/clothing/mask/plunger
 		)
 
 /obj/item/weapon/storage/belt/holster/general
@@ -287,7 +309,12 @@
 		/obj/item/device/binoculars,
 		/obj/item/weapon/marshalling_wand,
 		/obj/item/device/camera,
-		/obj/item/device/destTagger
+		/obj/item/device/destTagger,
+		/obj/item/clothing/glasses,
+		/obj/item/clothing/head/soft,
+		/obj/item/weapon/hand_labeler,
+		/obj/item/clothing/gloves,
+		/obj/item/weapon/crowbar/prybar
 		)
 
 /obj/item/weapon/storage/belt/holster/forensic
@@ -313,7 +340,7 @@
 		/obj/item/weapon/forensics/sample_kit,
 		/obj/item/device/camera,
 		/obj/item/device/taperecorder,
-		/obj/item/device/tape,
+		/obj/item/device/tape
 		)
 
 /obj/item/weapon/storage/belt/holster/machete

@@ -16,7 +16,7 @@
 	var/light_inner_range_on = 0.1
 	var/light_outer_range_on = 2
 	var/overlay_layer
-	atom_flags = ATOM_FLAG_CLIMBABLE
+	atom_flags = ATOM_FLAG_NO_TEMP_CHANGE | ATOM_FLAG_CLIMBABLE
 	clicksound = "keyboard"
 
 /obj/machinery/computer/New()
@@ -64,7 +64,7 @@
 		set_broken()
 	..()
 
-/obj/machinery/computer/update_icon()
+/obj/machinery/computer/on_update_icon()
 	overlays.Cut()
 	if(stat & NOPOWER)
 		set_light(0)
@@ -96,6 +96,7 @@
 		playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 		if(do_after(user, 20, src))
 			var/obj/structure/computerframe/A = new /obj/structure/computerframe( src.loc )
+			A.set_dir(src.dir)
 			var/obj/item/weapon/circuitboard/M = new circuit( A )
 			A.circuit = M
 			A.anchored = 1

@@ -210,25 +210,25 @@ default behaviour is:
 	take_overall_damage(0, burn_amount)
 
 /mob/living/proc/adjustBodyTemp(actual, desired, incrementboost)
-	var/temperature = actual
+	var/btemperature = actual
 	var/difference = abs(actual-desired)	//get difference
 	var/increments = difference/10 //find how many increments apart they are
 	var/change = increments*incrementboost	// Get the amount to change by (x per increment)
 
 	// Too cold
 	if(actual < desired)
-		temperature += change
+		btemperature += change
 		if(actual > desired)
-			temperature = desired
+			btemperature = desired
 	// Too hot
 	if(actual > desired)
-		temperature -= change
+		btemperature -= change
 		if(actual < desired)
-			temperature = desired
+			btemperature = desired
 //	if(istype(src, /mob/living/carbon/human))
 //		log_debug("[src] ~ [src.bodytemperature] ~ [temperature]")
 
-	return temperature
+	return btemperature
 
 /mob/living/proc/getBruteLoss()
 	return maxHealth - health
@@ -803,3 +803,24 @@ default behaviour is:
 		. -= 1
 	if(CLUMSY in mutations)
 		. -= 3
+
+/mob/living/can_drown()
+	return TRUE
+
+/mob/living/handle_drowning()
+	if(!can_drown() || !loc.is_flooded(lying))
+		return FALSE
+	if(prob(5))
+		to_chat(src, "<span class='danger'>You choke and splutter as you inhale water!</span>")
+	var/turf/T = get_turf(src)
+	T.show_bubbles()
+	return TRUE // Presumably chemical smoke can't be breathed while you're underwater.
+
+/mob/living/water_act(var/depth)
+	..()
+	wash_mob(src)
+	for(var/thing in get_equipped_items(TRUE))
+		if(isnull(thing)) continue
+		var/atom/movable/A = thing
+		if(A.simulated && !A.waterproof)
+			A.water_act(depth)

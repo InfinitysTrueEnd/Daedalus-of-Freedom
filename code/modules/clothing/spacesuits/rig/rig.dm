@@ -60,6 +60,7 @@
 
 	// Rig status vars.
 	var/open = 0                                              // Access panel status.
+	var/p_open = 0											  // Wire panel status
 	var/locked = 1                                            // Lock status.
 	var/subverted = 0
 	var/interface_locked = 0
@@ -98,6 +99,7 @@
 	if(src.loc == usr)
 		to_chat(usr, "The access panel is [locked? "locked" : "unlocked"].")
 		to_chat(usr, "The maintenance panel is [open ? "open" : "closed"].")
+		to_chat(usr, "The wire panel is [p_open ? "open" : "closed"].")
 		to_chat(usr, "Hardsuit systems are [offline ? "<font color='red'>offline</font>" : "<font color='green'>online</font>"].")
 
 		if(open)
@@ -506,7 +508,7 @@
 		ui.open()
 		ui.set_auto_update(1)
 
-/obj/item/weapon/rig/update_icon(var/update_mob_icon)
+/obj/item/weapon/rig/on_update_icon(var/update_mob_icon)
 
 	//TODO: Maybe consider a cache for this (use mob_icon as blank canvas, use suit icon overlay).
 	overlays.Cut()
@@ -848,9 +850,6 @@
 		if(user) to_chat(user, "<span class='warning'>You are locked out of the suit servo controller.</span>")
 		return 0
 	return 1
-
-/obj/item/weapon/rig/check_access(obj/item/I)
-	return TRUE
 
 /obj/item/weapon/rig/proc/force_rest(var/mob/user)
 	if(!ai_can_move_suit(user, check_user_module = 1))

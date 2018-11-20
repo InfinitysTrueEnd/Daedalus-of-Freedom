@@ -10,8 +10,10 @@ obj/item/organ/external/take_general_damage(var/amount, var/silent = FALSE)
 	take_external_damage(amount)
 
 /obj/item/organ/external/proc/take_external_damage(brute, burn, damage_flags, used_weapon = null)
+
 	brute = round(brute * get_brute_mod(), 0.1)
 	burn = round(burn * get_burn_mod(), 0.1)
+
 	if((brute <= 0) && (burn <= 0))
 		return 0
 
@@ -19,6 +21,22 @@ obj/item/organ/external/take_general_damage(var/amount, var/silent = FALSE)
 	var/edge  = (damage_flags & DAM_EDGE)
 	var/laser = (damage_flags & DAM_LASER)
 	var/blunt = brute && !sharp && !edge
+
+	// Handle some status-based damage multipliers.
+	if(blunt)
+		if(BP_IS_BRITTLE(src))
+			brute = Floor(brute * 1.5)
+	else if(BP_IS_CRYSTAL(src))
+		if(burn && laser)
+			burn = Floor(burn * 0.1)
+			if(burn)
+				brute += burn // Stress fracturing from heat!
+				owner.bodytemperature += burn
+				burn = 0
+			if(prob(25))
+				owner.visible_message("<span class='warning'>\The [owner]'s crystalline [name] shines with absorbed energy!</span>")
+		if(brute)
+			brute = Floor(brute * 0.8)
 
 	if(used_weapon)
 		add_autopsy_data("[used_weapon]", brute + burn)
@@ -40,7 +58,7 @@ obj/item/organ/external/take_general_damage(var/amount, var/silent = FALSE)
 			var/total_damage = brute_dam + burn_dam + brute + burn + spillover
 			var/threshold = max_damage * config.organ_health_multiplier
 			if(total_damage > threshold)
-				if(attempt_dismemberment(pure_brute, burn, edge, used_weapon, spillover, total_damage > threshold*3))
+				if(attempt_dismemberment(pure_brute, burn, edge, used_weapon, spillover, total_damage > threshold*6))
 					return
 
 	// High brute damage or sharp objects may damage internal organs
@@ -270,10 +288,18 @@ obj/item/organ/external/take_general_damage(var/amount, var/silent = FALSE)
 	return FALSE
 
 /obj/item/organ/external/proc/get_brute_mod()
-	return species.brute_mod + 0.2 * burn_dam/max_damage //burns make you take more brute damage
+	var/obj/item/organ/internal/augment/armor/A = owner && owner.internal_organs_by_name[BP_AUGMENT_CHEST_ARMOUR]
+	var/B = 1
+	if(A && istype(A))
+		B = A.brute_mult
+	return species.brute_mod * B + 0.2 * burn_dam/max_damage //burns make you take more brute damage
 
 /obj/item/organ/external/proc/get_burn_mod()
-	return species.burn_mod
+	var/obj/item/organ/internal/augment/armor/A = owner && owner.internal_organs_by_name[BP_AUGMENT_CHEST_ARMOUR]
+	var/B = 1
+	if(A && istype(A))
+		B = A.burn_mult
+	return species.burn_mod * B
 
 //organs can come off in three cases
 //1. If the damage source is edge_eligible and the brute damage dealt exceeds the edge threshold, then the organ is cut off.

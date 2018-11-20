@@ -9,9 +9,24 @@
 	difficulty = 2
 	send_material_data = 1
 
+/datum/stack_recipe/bell
+	title = "bell"
+	result_type = /obj/item/weapon/material/bell
+	req_amount = 5
+	time = 20
+	send_material_data = 1
+
 /datum/stack_recipe/ashtray
 	title = "ashtray"
 	result_type = /obj/item/weapon/material/ashtray
+	req_amount = 2
+	one_per_turf = 1
+	on_floor = 1
+	send_material_data = 1
+
+/datum/stack_recipe/coin
+	title = "coin"
+	result_type = /obj/item/weapon/material/coin
 	req_amount = 2
 	one_per_turf = 1
 	on_floor = 1
@@ -96,20 +111,32 @@
 	result_type = /obj/item/frame/light/small
 	difficulty = 2
 
+/datum/stack_recipe/light_switch
+	title = "light switch"
+	result_type = /obj/item/frame/light_switch
+	req_amount = 1
+	difficulty = 2
+
+/datum/stack_recipe/light_switch/windowtint
+	title = "window tint switch"
+	result_type = /obj/item/frame/light_switch/windowtint
+	req_amount = 1
+	difficulty = 2
+
 /datum/stack_recipe/apc
-	title = "small light fixture frame"
+	title = "APC frame"
 	result_type = /obj/item/frame/apc
 	req_amount = 2
 	difficulty = 2
 
 /datum/stack_recipe/air_alarm
-	title = "small light fixture frame"
+	title = "air alarm frame"
 	result_type = /obj/item/frame/air_alarm
 	req_amount = 2
 	difficulty = 2
 
 /datum/stack_recipe/fire_alarm
-	title = "small light fixture frame"
+	title = "fire alarm frame"
 	result_type = /obj/item/frame/fire_alarm
 	req_amount = 2
 	difficulty = 2

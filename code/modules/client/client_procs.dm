@@ -117,6 +117,11 @@
 		return null
 	if(byond_version < MIN_CLIENT_VERSION)		//Out of date client.
 		return null
+	if("[byond_version].[byond_build]" in config.forbidden_versions)
+		_DB_staffwarn_record(ckey, "Tried to connect with broken and possibly exploitable BYOND build.")
+		to_chat(src, "You are attempting to connect with a broken and possibly exploitable BYOND build. Please update to the latest version before trying again.")
+		qdel(src)
+		return
 
 	if(!config.guests_allowed && IsGuestKey(key))
 		alert(src,"This server doesn't allow guest accounts to play. Please go to http://www.byond.com/ and register for a key.","Guest","OK")
@@ -149,16 +154,14 @@
 		holder.owner = src
 
 	//preferences datum - also holds some persistant data for the client (because we may as well keep these datums to a minimum)
-	prefs = preferences_datums[ckey]
+	prefs = SScharacter_setup.preferences_datums[ckey]
 	if(!prefs)
 		prefs = new /datum/preferences(src)
-		preferences_datums[ckey] = prefs
 	prefs.last_ip = address				//these are gonna be used for banning
 	prefs.last_id = computer_id			//these are gonna be used for banning
 	apply_fps(prefs.clientfps)
 
 	. = ..()	//calls mob.Login()
-	prefs.sanitize_preferences()
 
 	GLOB.using_map.map_info(src)
 
@@ -200,7 +203,7 @@
 
 	if(holder)
 		src.control_freak = 0 //Devs need 0 for profiler access
-
+	send2mainirc("[src.key] has connected to the server.")
 	for(var/client/target in GLOB.clients)
 		if(!target)
 			continue
@@ -213,6 +216,7 @@
 	//DISCONNECT//
 	//////////////
 /client/Del()
+	send2mainirc("[src.key] has left the server.")
 	ticket_panels -= src
 	if(src && watched_variables_window)
 		STOP_PROCESSING(SSprocessing, watched_variables_window)

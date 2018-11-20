@@ -9,6 +9,7 @@
 	throw_range = 10
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT
+	req_one_access = list(access_heads, access_security)
 	var/datum/computer_file/data/warrant/active
 
 //look at it
@@ -20,6 +21,18 @@
 		show_content(user)
 	else
 		to_chat(user, "<span class='notice'>You have to be closer if you want to read it.</span>")
+
+// an active warrant with access authorized grants access
+/obj/item/device/holowarrant/GetAccess()
+	. = list()
+
+	if(!active)
+		return
+
+	if(active.archived)
+		return
+
+	. |= active.fields["access"]
 
 //hit yourself with it
 /obj/item/device/holowarrant/attack_self(mob/living/user as mob)
@@ -41,7 +54,7 @@
 /obj/item/device/holowarrant/attackby(obj/item/weapon/W, mob/user)
 	if(active)
 		var/obj/item/weapon/card/id/I = W.GetIdCard()
-		if(I && (access_security in I.access))
+		if(I && check_access_list(I.GetAccess()))
 			var/choice = alert(user, "Would you like to authorize this warrant?","Warrant authorization","Yes","No")
 			if(choice == "Yes")
 				active.fields["auth"] = "[I.registered_name] - [I.assignment ? I.assignment : "(Unknown)"]"
@@ -59,7 +72,7 @@
 			"<span class='notice'>You show the warrant to [M].</span>")
 	M.examinate(src)
 
-/obj/item/device/holowarrant/update_icon()
+/obj/item/device/holowarrant/on_update_icon()
 	if(active)
 		icon_state = "holowarrant_filled"
 	else

@@ -24,7 +24,7 @@
 	var/create_record = 1                 // Do we announce/make records for people who spawn on this job?
 
 	var/account_allowed = 1               // Does this job type come with a station account?
-	var/economic_modifier = 2             // With how much does this job modify the initial account amount?
+	var/economic_power = 2             // With how much does this job modify the initial account amount?
 
 	var/outfit_type                       // The outfit the employee will be dressed in, if any
 
@@ -41,6 +41,9 @@
 	var/max_skill = list()				  //Maximum skills allowed for the job.
 	var/skill_points = 16				  //The number of unassigned skill points the job comes with (on top of the minimum skills).
 	var/no_skill_buffs = FALSE			  //Whether skills can be buffed by age/species modifiers.
+
+	var/required_education = EDUCATION_TIER_NONE
+	var/available_by_default = TRUE
 
 /datum/job/New()
 	..()
@@ -76,24 +79,30 @@
 	if(!account_allowed || (H.mind && H.mind.initial_account))
 		return
 
-	var/loyalty = 1
-	if(H.client)
-		switch(H.client.prefs.nanotrasen_relation)
-			if(COMPANY_LOYAL)		loyalty = 1.30
-			if(COMPANY_SUPPORTATIVE)loyalty = 1.15
-			if(COMPANY_NEUTRAL)		loyalty = 1
-			if(COMPANY_SKEPTICAL)	loyalty = 0.85
-			if(COMPANY_OPPOSED)		loyalty = 0.70
+	// Calculate our pay and apply all relevant modifiers.
+	var/money_amount = 4 * rand(75, 100) * economic_power
 
-	//give them an account in the station database
-	if(!(H.species && (H.species.type in economic_species_modifier)))
-		return //some bizarre species like shadow, slime, or monkey? You don't get an account.
+	// Get an average economic power for our cultures.
+	var/culture_mod =   0
+	var/culture_count = 0
+	for(var/token in H.cultural_info)
+		var/decl/cultural_info/culture = H.get_cultural_value(token)
+		if(culture && !isnull(culture.economic_power))
+			culture_count++
+			culture_mod += culture.economic_power
+	if(culture_count)
+		culture_mod /= culture_count
+	money_amount *= culture_mod
 
-	var/species_modifier = economic_species_modifier[H.species.type]
-
-	var/money_amount = (rand(5,50) + rand(5, 50)) * loyalty * economic_modifier * species_modifier * GLOB.using_map.salary_modifier
+	// Apply other mods.
+	money_amount *= GLOB.using_map.salary_modifier
 	money_amount *= 1 + 2 * H.get_skill_value(SKILL_FINANCE)/(SKILL_MAX - SKILL_MIN)
 	money_amount = round(money_amount)
+
+	if(money_amount <= 0)
+		return // You are too poor for an account.
+
+	//give them an account in the station database
 	var/datum/money_account/M = create_account(H.real_name, money_amount, null)
 	if(H.mind)
 		var/remembered_info = ""
@@ -168,6 +177,10 @@
 	var/datum/species/S = all_species[prefs.species]
 	if(!is_species_allowed(S))
 		to_chat(feedback, "<span class='boldannounce'>Restricted species, [S], for [title].</span>")
+		return TRUE
+
+	if(!S.check_background(src, prefs))
+		to_chat(feedback, "<span class='boldannounce'>Incompatible background for role [title], species [S].</span>")
 		return TRUE
 
 	return FALSE
@@ -277,6 +290,27 @@
 		job_master.job_icons[title] = preview_icon
 
 	return job_master.job_icons[title]
+
+/datum/job/proc/get_unavailable_reasons(var/client/caller)
+	var/list/reasons = list()
+	if(jobban_isbanned(caller, title))
+		reasons["You are jobbanned."] = TRUE
+	if(!player_old_enough(caller))
+		reasons["Your player age is too low."] = TRUE
+	if(!is_position_available())
+		reasons["There are no positions left."] = TRUE
+	if(!is_branch_allowed(caller.prefs.char_branch))
+		reasons["Your branch of service does not allow it."] = TRUE
+	if(!is_rank_allowed(caller.prefs.char_branch, caller.prefs.char_rank))
+		reasons["Your rank choice does not allow it."] = TRUE
+	var/datum/species/S = all_species[caller.prefs.species]
+	if(S)
+		if(!is_species_allowed(S))
+			reasons["Your species choice does not allow it."] = TRUE
+		if(!S.check_background(src, caller.prefs))
+			reasons["Your background choices do not allow it."] = TRUE
+	if(LAZYLEN(reasons))
+		. = reasons
 
 /datum/job/proc/dress_mannequin(var/mob/living/carbon/human/dummy/mannequin/mannequin)
 	mannequin.delete_inventory(TRUE)

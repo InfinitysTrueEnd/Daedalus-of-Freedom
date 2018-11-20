@@ -564,6 +564,13 @@
 	item_state = "jensensuit"
 	worn_state = "pcrc"
 
+/obj/item/clothing/under/pcrcsuit
+	name = "\improper PCRC suit"
+	desc = "A suit belonging to Proxima Centauri Risk Control, a private security firm. This one looks more formal than its utility counterpart."
+	icon_state = "pcrcsuit"
+	item_state = "jensensuit"
+	worn_state = "pcrcsuit"
+
 /obj/item/clothing/under/grayson
 	name = "\improper Grayson overalls"
 	desc = "A set of overalls belonging to Grayson Manufactories, a manufacturing and mining company."
@@ -576,6 +583,12 @@
 	icon_state = "wardt"
 	worn_state = "wardt"
 
+/obj/item/clothing/under/dais
+	name = "\improper Deimos Advanced Information Systems uniform"
+	desc = "The uniform of Deimos Advanced Information Systems, an IT company."
+	icon_state = "dais"
+	worn_state = "dais"
+	
 /obj/item/clothing/under/mbill
 	name = "\improper Major Bill's uniform"
 	desc = "A uniform belonging to Major Bill's Transportation, a major shipping company."

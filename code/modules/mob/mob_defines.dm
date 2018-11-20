@@ -9,6 +9,7 @@
 	virtual_mob = /mob/observer/virtual/mob
 
 	movement_handlers = list(
+		/datum/movement_handler/mob/relayed_movement,
 		/datum/movement_handler/mob/death,
 		/datum/movement_handler/mob/conscious,
 		/datum/movement_handler/mob/eye,
@@ -136,7 +137,7 @@
 
 	var/voice_name = "unidentifiable voice"
 
-	var/faction = "neutral" //Used for checking whether hostile simple animals will attack you, possibly more stuff later
+	var/faction = MOB_FACTION_NEUTRAL //Used for checking whether hostile simple animals will attack you, possibly more stuff later
 	var/blinded = null
 	var/ear_deaf = null		//Carbon
 

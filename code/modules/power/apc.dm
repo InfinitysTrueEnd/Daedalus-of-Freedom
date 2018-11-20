@@ -127,6 +127,9 @@
 	var/global/list/status_overlays_environ
 
 
+/obj/machinery/power/apc/get_cell()
+	return cell
+
 /obj/machinery/power/apc/updateDialog()
 	if (stat & (BROKEN|MAINT))
 		return
@@ -271,7 +274,7 @@
 
 // update the APC icon to show the three base states
 // also add overlays for indicator lights
-/obj/machinery/power/apc/update_icon()
+/obj/machinery/power/apc/on_update_icon()
 	if (!status_overlays)
 		status_overlays = 1
 		status_overlays_lock = new
@@ -435,10 +438,10 @@
 //attack with an item - open/close cover, insert cell, or (un)lock interface
 
 /obj/machinery/power/apc/attackby(obj/item/W, mob/user)
-
 	if (istype(user, /mob/living/silicon) && get_dist(src,user)>1)
 		return src.attack_hand(user)
 	src.add_fingerprint(user)
+	if(istype(W, /obj/item/inducer)) return // inducer.dm afterattack handles this
 	if(isCrowbar(W) && opened)
 		if (has_electronics==1)
 			if (terminal)
@@ -455,7 +458,6 @@
 							"<span class='warning'>[user.name] has broken the power control board inside [src.name]!</span>",\
 							"<span class='notice'>You broke the charred power control board and remove the remains.</span>",
 							"You hear a crack!")
-						//ticker.mode:apcs-- //XSI said no and I agreed. -rastaf0
 					else
 						user.visible_message(\
 							"<span class='warning'>[user.name] has removed the power control board from [src.name]!</span>",\
@@ -1290,7 +1292,7 @@ obj/machinery/power/apc/proc/autoset(var/cur_state, var/on)
 	icon = 'icons/obj/module.dmi'
 	icon_state = "power_mod"
 	item_state = "electronic"
-	matter = list(DEFAULT_WALL_MATERIAL = 50, "glass" = 50)
+	matter = list(MATERIAL_STEEL = 50, MATERIAL_GLASS = 50)
 	w_class = ITEM_SIZE_SMALL
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 

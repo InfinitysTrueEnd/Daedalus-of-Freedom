@@ -18,7 +18,7 @@
 		/obj/item/clothing/head/helmet/solgov/command,
 		/obj/item/device/radio/headset/heads/torchcaptain,
 		/obj/item/clothing/glasses/sunglasses,
-		/obj/item/weapon/gun/energy/gun/secure,
+		/obj/item/weapon/gun/energy/revolver/secure,
 		/obj/item/device/radio/headset/heads/torchcaptain/alt,
 		/obj/item/weapon/storage/belt/holster/general,
 		/obj/item/weapon/melee/telebaton,
@@ -28,7 +28,7 @@
 		/obj/item/weapon/clipboard,
 		/obj/item/device/holowarrant,
 		/obj/item/weapon/folder/blue,
-		new /datum/atom_creator/weighted(list(/obj/item/weapon/storage/backpack/captain, /obj/item/weapon/storage/backpack/satchel_cap)),
+		new /datum/atom_creator/weighted(list(/obj/item/weapon/storage/backpack/captain, /obj/item/weapon/storage/backpack/satchel/cap)),
 		new /datum/atom_creator/weighted(list(/obj/item/weapon/storage/backpack/dufflebag/captain, /obj/item/weapon/storage/backpack/messenger/com))
 	)
 
@@ -48,7 +48,7 @@
 		/obj/item/clothing/head/helmet/solgov/command,
 		/obj/item/device/radio/headset/heads/torchxo,
 		/obj/item/weapon/storage/belt/holster/general,
-		/obj/item/weapon/gun/energy/gun/secure,
+		/obj/item/weapon/gun/energy/revolver/secure,
 		/obj/item/weapon/melee/telebaton,
 		/obj/item/device/flash,
 		/obj/item/device/megaphone,
@@ -60,7 +60,7 @@
 		/obj/item/weapon/clipboard,
 		/obj/item/device/holowarrant,
 		/obj/item/weapon/folder/blue,
-		new /datum/atom_creator/weighted(list(/obj/item/weapon/storage/backpack/captain, /obj/item/weapon/storage/backpack/satchel_cap)),
+		new /datum/atom_creator/weighted(list(/obj/item/weapon/storage/backpack/captain, /obj/item/weapon/storage/backpack/satchel/cap)),
 		new /datum/atom_creator/weighted(list(/obj/item/weapon/storage/backpack/dufflebag/captain, /obj/item/weapon/storage/backpack/messenger/com)),
 		/obj/item/weapon/storage/box/imprinting
 	)
@@ -95,7 +95,7 @@
 
 /obj/structure/closet/secure_closet/bridgeofficer
 	name = "bridge officer's locker"
-	req_access = list(access_heads)
+	req_access = list(access_bridge)
 	icon_state = "sol1"
 	icon_closed = "sol"
 	icon_locked = "sol1"

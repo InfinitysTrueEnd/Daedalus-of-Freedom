@@ -83,7 +83,7 @@
 	. = ..()
 	update_icon(1)
 
-/turf/simulated/floor/exoplanet/volcanic/update_icon(var/update_neighbors)
+/turf/simulated/floor/exoplanet/volcanic/on_update_icon(var/update_neighbors)
 	overlays.Cut()
 	for(var/direction in GLOB.cardinal)
 		var/turf/turf_to_check = get_step(src,direction)
@@ -107,8 +107,7 @@
 	iterations = 2
 	descriptor = "space volcanic mountains"
 	wall_type =  /turf/simulated/mineral/volcanic
-	mineral_sparse =  /turf/simulated/mineral/random/volcanic
-	mineral_rich = /turf/simulated/mineral/high_chance/volcanic
+	mineral_turf =  /turf/simulated/mineral/random/volcanic
 
 /turf/simulated/floor/exoplanet/lava
 	name = "lava"
@@ -163,6 +162,6 @@
 	name = "volcanic rock"
 	icon = 'icons/turf/flooring/lava.dmi'
 
-/turf/simulated/mineral/high_chance/volcanic
+/turf/simulated/mineral/random/high_chance/volcanic
 	name = "volcanic rock"
 	icon = 'icons/turf/flooring/lava.dmi'
